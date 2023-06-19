@@ -1,0 +1,20 @@
+This e-mail contains SLOSHXL_GUI V0.4 (February 2018).
+
+SLOSHXL_GUI the Excel-based application of the SLOSH code previously distributed by SwRI.
+SLOSHXL_GUI is meant to follow the flow and feel of the SLOSH code within the framework of Excel forms.  
+
+The revisions in this version are as follows:
+1. Inserted instruction I.2 to replace the pathname of the DLL to the path where the
+   user stored the DLL after copyin to the user's computer.
+2. Rebuilt DLL to use only Windows system libraries and DLL's
+3. Changed definition of PicWidth, PicHeight in subroutine DrawBox to remove an error condition
+   that occurs in Excel 2016 
+4. Corrected an error in the conical tank damping calculations for radians-degrees conversions.
+
+Please provide feedback to me about possible bugs and operational problems.  
+I will repair the bugs and address suggested changes for operational problems if feasible;
+however, future revisions of this (free) software will be distribute as I find time.
+    
+Thank you for your interest.
+
+

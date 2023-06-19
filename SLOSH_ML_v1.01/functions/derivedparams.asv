@@ -1,0 +1,81 @@
+function [K,w,Vc,Mm,Ln,Hm,eta0n_xn,M0] = derivedparams(rho,flvol,H,V,D,g,L,a,B,hk,Ph_a,Mn,Bzeros,intb,r_ic,r_oc,z_CM)
+% Pre-calculation
+N  = length(hk);
+D  = diag(D);
+
+% Nondimensional frequency
+K  = D.*(L/a);
+% Kn = H/a;
+
+% Natural frequencies
+% w = sqrt(K*g/(L*a));
+ w = sqrt((D.*g)./a);
+
+% Characteristic velocity
+Vc = w(1)*a;
+
+% Length of pendulum
+Ln = a./D;
+
+% Fluid mass
+M  = flvol*rho;
+
+% gamma parameter
+gamma = zeros(N,1);
+
+for n = 1:N
+  gamma(n) = pi*a*a^2/flvol * sum(sum(V(:,n)*V(:,n)'.*B));
+%   gamma(n) = pi*H*a^2/flvol * sum(sum(V(:,n)*V(:,n)'.*B));
+
+end
+
+
+% b parameter
+b = (pi*a^3./(flvol*gamma)).*V'*B(1,:)';
+
+% b = (pi*a^3./(flvol*gamma)).*V'*B(1,:)';
+
+
+
+
+% Mass of slosh modes
+% Mm = M.*D.*(L/a).*gamma.*b.^2;
+Mm = M.*D.*gamma.*b.^2;
+
+% h parameter
+% h  = (2*pi*a.^3)./(flvol.*gamma.*K).*V'*hk;
+h  = (2*pi*a.^3)./(flvol.*gamma.*D).*V'*hk;
+
+
+% Height of the slosh mass pendulum hinge above the bottom of the tank
+Hm =-H+(a).*(1./D + h./(b));
+
+% Ratio of slosh wave amplitude to slosh mass amplitude
+
+% eta0n_xn = Ph_a.*b.*L.*H/a;
+eta0n_xn = Ph_a.*b.*D.*H./(a);
+% eta0n_xn = (g./a).*Mm.*D;
+% eta0n_xn = Ph_a.*b.*Ln;
+
+% Inert mass of fluid
+% Mtot = sum(Mm);
+M0 = M*(1-sum(Mm(1:2)));
+% M0 = M-Mtot;
+
+%Inert mass height
+Hcg = abs(intb(3));
+H0 = (M*Hcg - sum(Mm.*(Hm-Ln)))/M0;
+
+% Height of inert fluid over cg
+
+%Add M0 and H0 to beginning of Data
+Mm = [M0; Mm];
+Hm = [H0; Hm];
+Ln = [0; Ln];
+eta0n_xn = [0; eta0n_xn];
+
+% Inert mass of fluid
+% M0 = M*(1-sum(gamma(1:N).*b(1:N).^2.*K(1:N))); %%% !!! Select nº of modes
+
+% Height of inert fluid over cg
+
